@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>News Headlines</title>
+</head>
+
+<body>
+    <h1>Top News Headlines</h1>
+    {{#each articles}}
+    <div>
+        <h2>{{this.title}}</h2>
+        <p>{{this.description}}</p>
+        <a href="{{this.url}}" target="_blank">Read More</a>
+        <p>Published At: {{this.publishedAt}}</p>
+        <p>Source: {{this.source.name}}</p>
+        <hr>
+    </div>
+    {{/each}}
+</body>
+
+</html>

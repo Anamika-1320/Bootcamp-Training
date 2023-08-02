@@ -1,0 +1,80 @@
+<!-- views/layouts/main.handlebars -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <script>
+        document.getElementById('log-out').addEventListener('click', function (event) {
+            event.preventDefault();
+            fetch('/logout', {
+                method: 'GET'
+            })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                });
+        });
+    </script>
+
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <nav class="navbar bg-dark fixed-top navbar-expand-lg bg-body-tertiary border-bottom border-bottom-dark"
+        data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img id="logo" src="/images/Logo.png" alt="Comapny logo here!" width="90"
+                    height="50"></a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="menu">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact Us</a>
+                </li>
+            </ul>
+            <div id="navbarSupportedContent">
+                <form id="mynav" class="d-flex" role="search">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {{#if loggedIn}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="profile">{{username}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="log-out" href="logout">Log Out</a>
+                        </li>
+                        {{else}}
+                        <li class="nav-item">
+                            <a id="snupdate" class="nav-link" aria-current="page" href="login">Log In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="snupdate" class="nav-link" aria-current="page" href="signup">Sign Up</a>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </nav>
+    {{{body}}}
+    <br><br>
+    <hr />
+    <h3 id="contact">Contact Us</h3>
+    <h6>012-345-6789 <br>foodies@mail.com</h6>
+    <br><br>
+    <hr />
+    <p>Made by - Anamika Singh<br>&copy; 2023 - Foodies</p>
+</body>
+
+</html>

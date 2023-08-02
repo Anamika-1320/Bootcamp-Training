@@ -1,0 +1,98 @@
+<!-- views/menu.handlebars -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Foodies - Menu</title>
+</head>
+
+<body id="home">
+    <br><br>
+    <hr>
+    <center>
+        <h1 id="menu">OUR MENU</h1>
+        <div>
+            <hr>
+        </div>
+    </center>
+
+    <table>
+        <tr>
+            <td><img src="https://i.ibb.co/9g9yg5G/chad-montano-l-P5-MCM6n-Z5-A-unsplash.jpg" height="310"
+                    width="320" /></td>
+            <td></td>
+            <td>
+                <h2>FOOD</h2>
+                <h5> <em>Entrees, mains, and handhelds</em></h5>
+                <table border="1px" width="900">
+                    <tr>
+                        <th>ITEM</th>
+                        <th>DESCRIPTION</th>
+                        <th>PRICE</th>
+                    </tr>
+                    {{#each foodItems}}
+                    <tr>
+                        <td>{{this.name}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.price}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    <table>
+        <tr>
+            <td>
+                <h2 align="right">DESERTS</h2>
+                <h5 align="right"><em>Deserts and sweets</em></h5>
+                <table border="1px" width="900">
+                    <tr>
+                        <th>ITEM</th>
+                        <th>DESCRIPTION</th>
+                        <th>PRICE</th>
+                    </tr>
+                    {{#each desertItems}}
+                    <tr>
+                        <td>{{this.name}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.price}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </td>
+            <td></td>
+            <td><img src="https://i.ibb.co/rsxRJMX/oscar-nord-5-CPn8-NE2-Tc-unsplash.jpg" height="310" width="320" />
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    <table>
+        <tr>
+            <td><img src="https://i.ibb.co/cNrYC6S/izabela-rutkowski-Nme6-Tb-Wu-Vp-A-unsplash.jpg" height="310"
+                    width="320" /></td>
+            <td></td>
+            <td>
+                <h2>DRINKS</h2>
+                <h5><em>Sprits, wine, and beer</em></h5>
+                <table border="1px" width="900">
+                    <tr>
+                        <th>ITEM</th>
+                        <th>DESCRIPTION</th>
+                        <th>PRICE</th>
+                    </tr>
+                    {{#each drinkItems}}
+                    <tr>
+                        <td>{{this.name}}</td>
+                        <td>{{this.description}}</td>
+                        <td>{{this.price}}</td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+table,
+tr,
+td,
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+}
+
+td,
+th {
+    padding: 4px;
+}
+
+th {
+    color: red;
+}
+
+h1 {
+    position: relative;
+    left: 30px;
+}
+
+form {
+    position: fixed;
+    top: 300px;
+    right: 25px;
+}

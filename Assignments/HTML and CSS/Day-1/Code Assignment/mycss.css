@@ -1,0 +1,36 @@
+#dv1,
+#dv2,
+#dv3 {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+#dv2 {
+    background-image: url("static/bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 1300px;
+}
+
+
+h2 {
+    background: yellow;
+}
+
+h1,
+h3,
+h5 {
+    color: rgb(50, 140, 180)
+}
+
+#p1,
+#p2,
+#p3 {
+    color: rgb(218, 18, 131);
+}
+
+.a1,
+.a3 {
+    color: green;
+}

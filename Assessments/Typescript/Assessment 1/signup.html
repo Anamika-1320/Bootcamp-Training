@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <nav class="navbar bg-dark fixed-top navbar-expand-lg bg-body-tertiary border-bottom border-bottom-dark"
+        data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="foodies.html"><img id="logo" src="static/Logo.png" alt="Comapny logo here!"
+                    width="90" height="50"></a>
+            <div id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                </ul>
+                <form class="d-flex" role="search">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="menu.html">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="">Sign Up</a>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div id="logdiv">
+        <img id="login" src="static/login.png" alt="" widht="400" height="600">
+        <div id="signup">
+            <h2 id="fh2">Sign Up Here!</h2>
+            <div id="form1">
+                <form id="signupform">
+                    <div class="mb-3">
+                        <label for="FName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="FName" placeholder="John" name="fname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="LName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="LName" placeholder="Doe" name="lname">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Phone" class="form-label">Mobile Number</label>
+                        <input type="number" class="form-control" id="Phone" name="mob" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            name="email" required>
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="pass" required>
+                    </div>
+                    <center><input id="submit" type="submit" class="btn btn-primary"></center>
+
+                </form>
+                <script src="signupdata.js"></script>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

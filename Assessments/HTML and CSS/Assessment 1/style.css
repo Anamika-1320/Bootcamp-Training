@@ -1,0 +1,66 @@
+#welcome {
+    float: right;
+    margin-top: 50px;
+    margin-right: 100px;
+}
+
+#lcard1 {
+    float: left;
+    width: 800px;
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#lh2 {
+    text-align: right;
+}
+
+#header {
+    text-align: center;
+}
+
+#card1 {
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#form1 {
+    float: right;
+    margin-right: 150px;
+    width: 400px;
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    border-radius: 10px;
+}
+
+#login {
+    float: left;
+}
+
+#fh2 {
+    float: right;
+    margin-top: 30px;
+    margin-right: 250px;
+    margin-bottom: 20px;
+}
+
+#footer {
+    float: left;
+    top: 800px;
+    text-align: center;
+    margin-bottom: 100px;
+    margin-top: 100px;
+}
+
+hr {
+    width: 1250px;
+}
+
+nav {
+    float: right;
+    width: 100%;
+}

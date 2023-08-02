@@ -1,0 +1,23 @@
+<head>
+    <script type="text/javascript">
+        function IsEven() {
+            var number = document.getElementById("textbox").value;
+            if (number % 2 == 0) {
+                alert(number + " is even number");
+            }
+            else {
+                alert(number + " is odd number");
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <form id="form1">
+        Number:
+        <input type="number" id="textbox">
+        <input type="button" value="Check Number" onclick="IsEven()" />
+    </form>
+</body>
+
+</html>

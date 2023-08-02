@@ -1,0 +1,114 @@
+----- USER ROLES -----------
+select rolname from pg_roles;
+create role bob;
+\du
+CREATE role deloitte login;
+CREATE role shree login password 'anything';
+\c
+\c joindb
+ select * from tblemployee;
+>>ERROR:  permission denied for table tblemployee
+
+CREATE role qkhan SUPERUSER login password 'root1';
+ \c postgres 'qkhan';
+ CREATE DATABASE sample;
+ CREATE ROLE vatsal login password 'root2' CONNECTION LIMIT 2;
+CREATE ROLE dev_api WITH LOGIN PASSWORD 'securePass1' VALID UNTIL '2030-01-01';
+
+------- PERMISSIONS -------------
+ \c postgres 'postgres';
+CREATE ROLE saurabh login password 'root3';
+ GRANT SELECT ON tblemployee TO saurabh;
+\c joindb 'saurabh';
+select * from tblemployee;
+\c joindb 'qkhan';
+CREATE TABLE "person" (id INT PRIMARY KEY, name VARCHAR(50));
+GRANT ALL ON tblemployee TO saurabh;
+\c joindb saurabh;
+ INSERT INTO tblemployee VALUES(11, 'Jim', 'Male', 5000, 3);
+>>INSERT 0 1
+\c joindb qkhan;
+ GRANT SELECT ON ALL TABLES IN SCHEMA public TO saurabh;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO saurabh;
+\c joindb saurabh;
+ SELECT * FROM person;
+ INSERT INTO person VALUES (1, 'abc');
+>> INSERT 0 1
+
+\c postgres postgres;
+ CREATE ROLE cillian LOGIN PASSWORD 'oppenheimer';
+\c dvdrental;
+GRANT ALL ON film TO cillian;
+ GRANT SELECT ON actor TO cillian;
+REVOKE SELECT ON actor FROM cillian;
+ \c dvdrental cillian;
+SELECT * FROM film;
+SELECT * FROM actor;
+>> ERROR:  permission denied for table actor
+
+\c postgres postgres;
+REVOKE ALL ON ALL TABLES IN SCHEMA public FROM saurabh;
+DROP ROLE saurabh;
+DROP ROLE bob;
+ALTER ROLE qkhan NOSUPERUSER;
+ALTER ROLE qkhan RENAME TO ram;
+REASSIGN OWNED BY ram TO postgres;
+DROM OWNED BY ram;
+DROP ROLE ram;
+
+----- GROUP ROLES ------
+CREATE ROLE sales;
+CREATE ROLE aaa LOGIN PASSWORD 'aaa';
+ GRANT sales TO aaa;
+CREATE ROLE bbb LOGIN PASSWORD 'bbb';
+ GRANT sales TO bbb;
+CREATE ROLE ccc LOGIN PASSWORD 'ccc';
+ GRANT sales TO ccc;
+\c postgres;
+ALTER ROLE sales LOGIN PASSWORD 'sales';
+ALTER ROLE sales NOLOGIN;
+GRANT ALL ON DATABASE joindb TO sales;
+GRANT ALL ON tblemployee TO sales;
+ \c joindb aaa;
+SELECT * FROM tblemployee;
+ \c joindb bbb;
+INSERT INTO tblemployee VALUES(12, 'Daisy', 'Female', 3800, 2);
+>> INSERT 0 1
+REVOKE sales FROM ccc;
+DROP ROLE ccc;
+DROP ROLE bbb;
+REVOKE ALL ON DATABASE joindb FROM sales;
+REASSIGN OWNED BY sales TO postgres;
+DROP OWNED BY sales;
+\c joindb;
+REVOKE ALL ON tblemployee FROM sales;
+DROP ROLE sales;
+DROP ROLE aaa;
+
+CREATE ROLE sales;
+CREATE ROLE aaa LOGIN PASSWORD 'aaa';
+GRANT sales TO aaa;
+\c joindb;
+ GRANT ALL ON tblemployee TO sales;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO sales;
+ \c joindb aaa;
+SELECT * FROM tblemployee;
+\c postgres postgres;
+CREATE ROLE marketing;
+CREATE ROLE ddd LOGIN PASSWORD 'ddd';
+GRANT marketing TO ddd;
+
+select * from pg_catalog.pg_user;
+
+--------- TRANSACTIONS ------------
+SELECT * FROM accounts;
+
+--------- BACKUP ------------
+sql dump
+C:\Program Files\PostgreSQL\15\bin>pg_dump -U postgres -d joindb -f C:/Users/anamikasingh1/Desktop/jbc.tar
+filesystem level
+archive
+
+---------- RESTORE ----------
+psql -U postgres -d newjoindb -f C:/Users/anamikasingh1/Desktop/jbc.bak
+ 

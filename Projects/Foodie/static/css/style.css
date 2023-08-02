@@ -1,0 +1,61 @@
+.nav-link,
+.active {
+    color: #f7c12c;
+}
+
+nav {
+    width: 100%;
+}
+
+#welcome {
+    float: right;
+    margin-top: 50px;
+    margin-right: 100px;
+}
+
+#lcard1 {
+    float: left;
+    width: 800px;
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#lh2 {
+    text-align: right;
+}
+
+#header {
+    text-align: center;
+}
+
+#card1 {
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#fh2 {
+    float: right;
+    margin-top: 100px;
+    margin-right: 18%;
+    margin-bottom: 15px;
+}
+
+#form1 {
+    float: right;
+    margin-right: 8%;
+    width: 35%;
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    border-radius: 10px;
+}
+
+#login {
+    float: left;
+    width: 50%;
+    height: 70%;
+    margin-top: 250;
+}
