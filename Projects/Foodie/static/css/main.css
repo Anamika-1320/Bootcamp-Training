@@ -1,0 +1,93 @@
+.navbar {
+    background-color: #0D0E11;
+}
+
+@keyframes pendulum {
+    0% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(10deg);
+    }
+
+    66% {
+        transform: rotate(-15deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+
+    /* Return to the original position */
+}
+
+#logo:hover {
+    animation: pendulum 1.5s 1;
+}
+
+.nav-link {
+    color: #d9c378;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #f9f2a1;
+    transform: scale(1.1) translateZ(0);
+
+}
+
+.nav-link:active {
+    color: #f9f2a1;
+}
+
+a {
+    display: block;
+}
+
+table {
+    width: 100%;
+    margin-left: 20;
+    margin-right: 20;
+}
+
+nav {
+    width: 100%;
+}
+
+#welcome {
+    float: right;
+    margin-top: 50px;
+    margin-right: 100px;
+}
+
+#lcard1 {
+    float: left;
+    width: 800px;
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#lh2 {
+    text-align: right;
+}
+
+#header {
+    text-align: center;
+}
+
+#card1 {
+    background-color: rgb(229, 222, 242);
+    padding: 15px 15px 15px 15px;
+    margin: 20px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+#login {
+    float: left;
+    width: 50%;
+    height: 70%;
+    margin-top: 250;
+}
