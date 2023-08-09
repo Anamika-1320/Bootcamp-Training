@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Error Handling Example</title>
+</head>
+
+<body>
+  <button id="errorButton">Click Me to Trigger an Error</button>
+  <p id="errorMessage" style="color: red;"></p>
+
+  <script>
+    function handleError(message, source, lineno, colno, error) {
+      const errorMessage = `An error occurred: ${message}`;
+      const sourceInfo = `Source: ${source}`;
+      const lineNumberInfo = `Line Number: ${lineno}`;
+      const columnNumberInfo = `Column Number: ${colno}`;
+
+      const errorMessageElement = document.getElementById('errorMessage');
+      errorMessageElement.textContent = `${errorMessage}\n${sourceInfo}\n${lineNumberInfo}\n${columnNumberInfo}`;
+
+      // Prevent the default browser error handling behavior
+      return true;
+    }
+
+    window.onerror = handleError;
+
+    function triggerError() {
+      undefinedFunction(); // This will cause an error
+    }
+
+    document.getElementById('errorButton').addEventListener('click', triggerError);
+  </script>
+</body>
+
+</html>

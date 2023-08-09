@@ -3,6 +3,11 @@
     color: #f7c12c;
 }
 
+table {
+    width: 100%;
+    margin: 20;
+}
+
 nav {
     width: 100%;
 }

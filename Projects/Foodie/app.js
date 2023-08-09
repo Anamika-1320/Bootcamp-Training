@@ -10,6 +10,9 @@ const methodOverride = require('method-override');
 const app = express();
 app.use(express.static('static'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(methodOverride('_method'));
 
 // Generate a random session secret key
 const sessionSecret = crypto.randomBytes(64).toString('hex');
@@ -24,34 +27,24 @@ app.use(session({
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'foodies',
-    schema: 'menu',
+    database: 'SizzleAndSpice',
     password: 'root',
-    port: 5432, // Default PostgreSQL port
-});
-
-const userpool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'foodies',
-    password: 'root',
-    port: 5432, // Default PostgreSQL port
+    port: 5432,
 });
 
 // Middleware setup
 app.engine('handlebars', engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(methodOverride('_method'));
-
 app.get('/', (req, res) => {
-    if (req.session && req.session.username) {
+    pattern = /sns\.com$/;
+    if (req.session && pattern.test(req.session.email)) {
+        res.render('home', { loggedIn: true, admin: true });
+    } else if (req.session && req.session.username) {
         const username = req.session.username;
-        res.render('foodies', { loggedIn: true, username });
+        res.render('home', { loggedIn: true, username });
     } else {
-        res.render('foodies', { loggedIn: false });
+        res.render('home', { loggedIn: false });
     }
 });
 
@@ -63,12 +56,13 @@ app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.get('/admin', (req, res) => {
-    res.render('admin');
-});
-
 app.get('/logout', (req, res) => {
-    console.log(`${req.session.email} logged out!`);
+    pattern = /sns\.com$/;
+    if (req.session && pattern.test(req.session.email)) {
+        console.log('Admin logged out.');
+    } else {
+        console.log(`${req.session.email} logged out!`);
+    }
     req.session.destroy((err) => {
         if (err) {
             console.error('Error destroying session:', err);
@@ -82,9 +76,9 @@ app.get('/profile', (req, res) => {
     if (req.session && req.session.username) {
         const username = req.session.username;
         const email = req.session.email;
-        const query = 'SELECT * FROM users WHERE email = $1';
+        const query = 'SELECT * FROM users.customer WHERE email = $1';
         const values = [email];
-        userpool.query(query, values, async (err, result) => {
+        pool.query(query, values, async (err, result) => {
             if (err) {
                 console.error('Error executing query:', err);
                 return res.status(500).send('Error executing query');
@@ -97,10 +91,54 @@ app.get('/profile', (req, res) => {
     }
 });
 
+app.post('/validate-signup-email', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const query = `SELECT * FROM users.customer WHERE email = $1`;
+        const result = await pool.query(query, [email]);
+        if (result.rows.length > 0) {
+            res.json({ status: 'error', message: 'Account with this email already exists.' });
+        }
+    } catch (error) {
+        console.error('Internal server error:', error);
+        res.status(500).json({ status: 'error', message: 'Internal server error.' });
+    }
+});
+
+app.post('/validate-login-email', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const query = `SELECT * FROM users.admin WHERE email = $1 union SELECT * FROM users.customer WHERE email = $1`;
+        const result = await pool.query(query, [email]);
+        if (result.rows.length == 0) {
+            res.json({ status: 'error', message: 'No account found with this email.' });
+        }
+    } catch (error) {
+        console.error('Internal server error:', error);
+        res.status(500).json({ status: 'error', message: 'Internal server error.' });
+    }
+});
+
+app.post('/validate-login-password', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const query = `SELECT * FROM users.admin WHERE email = $1 union SELECT * FROM users.customer WHERE email = $1`;
+        const result = await pool.query(query, [email]);
+        const storedHashedPassword = result.rows[0].password;
+        const passwordMatch = await bcrypt.compare(password, storedHashedPassword);
+        if (!passwordMatch) {
+            res.json({ status: 'error', message: 'Incorrect password!' });
+        }
+    } catch (error) {
+        console.error('Internal server error:', error);
+        res.status(500).json({ status: 'error', message: 'Internal server error.' });
+    }
+});
+
 // Handle form submission
 app.post('/signup', (req, res) => {
     const { fname, lname, mob, email, pass } = req.body;
-
     // Hash the password asynchronously using bcrypt
     bcrypt.hash(pass, 10, (err, hashedPassword) => {
         if (err) {
@@ -110,10 +148,10 @@ app.post('/signup', (req, res) => {
 
         // Insert the data into the PostgreSQL table
         const query =
-            'INSERT INTO users (first_name, last_name, mobile, email, password) VALUES ($1, $2, $3, $4, $5)';
+            'INSERT INTO users.customer (first_name, last_name, mobile, email, password) VALUES ($1, $2, $3, $4, $5)';
         const values = [fname, lname, mob, email, hashedPassword];
 
-        userpool.query(query, values, (err, result) => {
+        pool.query(query, values, (err, result) => {
             if (err) {
                 console.error('Error executing query:', err);
                 return res.status(500).send('Error executing query');
@@ -127,34 +165,26 @@ app.post('/signup', (req, res) => {
 // Handle login form submission
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const query = 'SELECT * FROM users WHERE email = $1';
+    const query = 'SELECT * FROM users.customer WHERE email = $1 union SELECT * FROM users.admin WHERE email = $1';
     const values = [email];
 
-    userpool.query(query, values, async (err, result) => {
+    pool.query(query, values, async (err, result) => {
         if (err) {
             console.error('Error executing query:', err);
             return res.status(500).send('Error executing query');
         }
 
         const user = result.rows[0];
-        if (!user) {
-            return res.status(401).send('Invalid credentials');
-        }
 
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-            return res.status(401).send('Invalid credentials');
-        }
         req.session.username = user.first_name;
         req.session.email = user.email;
-        if (user.email == 'admin@foodies.com') {
-            res.redirect('/admin');
-            console.log(`${user.first_name} logged in!`);
-        }
-        else {
-            res.redirect('/');
+        pattern = /sns\.com$/;
+        if (pattern.test(req.session.email)) {
+            console.log('Admin logged in.');
+        } else {
             console.log(`${user.first_name} ${user.last_name} (${user.email}) logged in!`);
         }
+        res.redirect('/');
     });
 });
 
@@ -162,7 +192,7 @@ app.post('/login', async (req, res) => {
 const insertFood = async (foodData) => {
     const { name, description, price } = foodData;
     try {
-        const query = 'INSERT INTO menu.food (name, description, price) VALUES ($1, $2, $3) RETURNING *';
+        const query = 'INSERT INTO item.menu (name, description, price) VALUES ($1, $2, $3) RETURNING *';
         const values = [name, description, price];
         const result = await pool.query(query, values);
         return result.rows[0];
@@ -190,26 +220,34 @@ app.post('/add-food', async (req, res) => {
 
 // Route to display the menu
 app.get('/menu', async (req, res) => {
+    const section = req.query.section;
+    const category = req.query.category;
+    var query;
+    if (section == 'All') {
+        if (category) {
+            query = `SELECT * FROM item.menu where category = '${category}' or category is null order by id`;
+        } else {
+            query = `SELECT * FROM item.menu order by id`;
+        }
+    } else if (['Main Course', 'Appetizers'].includes(section) && category) {
+        query = `SELECT * FROM item.menu where section = '${section}' and category = '${category}'`;
+    } else {
+        query = `SELECT * FROM item.menu where section = '${section}'`;
+    }
     try {
-        const fquery = 'SELECT * FROM menu.food';
-        const fresult = await pool.query(fquery);
-        const foodItems = fresult.rows;
-        const dquery = 'SELECT * FROM menu.deserts';
-        const dresult = await pool.query(dquery);
-        const desertItems = dresult.rows;
-        const drquery = 'SELECT * FROM menu.drinks';
-        const drresult = await pool.query(drquery);
-        const drinkItems = drresult.rows;
+        const result = await pool.query(query);
+        const items = result.rows;
         if (req.session && req.session.username) {
             const username = req.session.username;
-            res.render('menu', { loggedIn: true, username, foodItems, desertItems, drinkItems });
+            res.render('menu', { loggedIn: true, username, items });
         } else {
-            res.render('menu', { foodItems, desertItems, drinkItems });
+            res.render('menu', { items });
         }
     } catch (error) {
         res.status(500).send('Error fetching food items');
     }
 });
+
 
 const deleteFoodItem = async (id) => {
     try {
@@ -233,7 +271,7 @@ app.get('/del-food/:id', async (req, res) => {
         } else {
             res.redirect('/menu');
             console.log(`Food item with ID ${id} has been deleted.`);
-            // res.status(200).send(`Food item with ID ${id} has been deleted.`);
+            // res.status(200).send(`Food item with ID ${ id } has been deleted.`);
         }
     } catch (error) {
         res.status(500).send('Error deleting food item');

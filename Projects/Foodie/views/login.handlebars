@@ -4,18 +4,30 @@
 
 <head>
     <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
 <body>
-    <br><br><br>
-    <h2>Login</h2>
-    <form action="/login" method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="submit" value="Login">
-    </form>
+    <div id="loginDiv">
+        <h2 id="loginHeading">Log In Here!</h2>
+        <div id="loginFormDiv">
+            <form id="loginForm" action="/login" method="post">
+                <div class="mb-3 form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="inputBox" id="email" aria-describedby="emailHelp" name="email"
+                        placeholder="  " required>
+                    <div id="emailHelp" class="form-text"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="inputBox" id="password" name="pass" placeholder="  " required>
+                    <div id="passwordHelp" class="form-text"></div>
+                </div>
+                <center><input id="submit" type="submit" class="btn" value="Log In"></center>
+            </form>
+        </div>
+    </div>
 </body>
+<script src="/js/validateLogin.js"></script>
 
 </html>

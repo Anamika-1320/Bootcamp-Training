@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>window.location Example</title>
+</head>
+
+<body>
+    <h1>Current URL Information</h1>
+    <p id="urlInfo"></p>
+
+    <button id="navigateButton">Navigate to Google</button>
+    <button id="reloadButton">Reload Page</button>
+
+    <script>
+        const urlInfoElement = document.getElementById('urlInfo');
+        urlInfoElement.textContent = `Current URL: ${window.location.href}`;
+
+        const navigateButton = document.getElementById('navigateButton');
+        navigateButton.addEventListener('click', function () {
+            window.location.href = 'https://www.google.com';
+        });
+
+        const reloadButton = document.getElementById('reloadButton');
+        reloadButton.addEventListener('click', function () {
+            window.location.reload();
+        });
+    </script>
+</body>
+
+</html>

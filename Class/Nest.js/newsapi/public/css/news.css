@@ -1,0 +1,12 @@
+h1 {
+    padding-top: 10px;
+}
+
+hr {
+    padding-bottom: 10px;
+}
+
+#card-custom {
+    border: 1px solid black;
+    margin-bottom: 20px;
+}

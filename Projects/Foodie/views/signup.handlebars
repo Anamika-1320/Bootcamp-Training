@@ -5,45 +5,60 @@
 
 <head>
     <title>Sign Up</title>
+    <link rel="stylesheet" href="/css/signup.css">
 </head>
 
 <body>
-    <br>
-    <div id="logdiv">
-        <img id="login" src="/images/login.png" alt="" widht="400" height="600">
-        <div id="signup">
-            <h2 id="fh2">Sign Up Here!</h2>
-            <div id="form1">
-                <form id="signupform" action="/signup" method="post">
-                    <div class="mb-3">
+    <div id="signupDiv">
+        <img id="eat_pasta" src="/images/eat_pasta.png" alt="">
+        <img id="chef" src="/images/chef.png" alt="">
+        <h2 id="signupHeading">Sign Up Here!</h2>
+        <div id="signupFormDiv">
+            <form id="signupForm" action="/signup" method="post">
+                <div class="mb-3 form-inline">
+                    <div class="col-md-6 form-group first-name">
                         <label for="FName" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="FName" placeholder="John" name="fname" required>
+                        <input type="text" class="inputBox" id="FName" placeholder="  " name="fname" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="col-md-6 form-group last-name">
                         <label for="LName" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="LName" placeholder="Doe" name="lname">
+                        <input type="text" class="inputBox" id="LName" placeholder="  " name="lname">
                     </div>
-                    <div class="mb-3">
-                        <label for="Phone" class="form-label">Mobile Number</label>
-                        <input type="number" class="form-control" id="Phone" name="mob" required>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="mobile" class="form-label">Mobile Number</label>
+                    <input type="number" class="inputBox" id="mobile" pattern="[0-9]{10}" name="mob" placeholder="  "
+                        required>
+                    <div id="mobileHelp" class="form-text">We'll never share your number with anyone else.</div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="inputBox" id="email" aria-describedby="emailHelp" name="email"
+                        placeholder="  " required>
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="inputBox" id="password" name="pass" placeholder="  " required>
+                    <div id="passwordHelp" class="form-text"></div>
+                </div>
+                <div class="mb-3 form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <input type="password" class="inputBox" id="confirmPassword" name="confirmPass" placeholder="  "
+                            required>
+                        <span class="input-group-addon">
+                            <i class="toggle-password fas fa-eye"
+                                onclick="togglePasswordVisibility('confirmPassword')"></i>
+                        </span>
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            name="email" required>
-                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="pass" required>
-                    </div>
-                    <center><input id="submit" type="submit" class="btn btn-primary"></center>
-                </form>
-            </div>
+                    <div id="confirmPasswordHelp" class="form-text"></div>
+                </div>
+                <center><input id="submit" type="submit" class="btn" value="Sign Up"></center>
+            </form>
         </div>
     </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
+<script src="/js/validateSignup.js"></script>
 
 </html>

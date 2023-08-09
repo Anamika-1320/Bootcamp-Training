@@ -4,95 +4,75 @@
 
 <head>
     <title>Foodies - Menu</title>
+    <link rel="stylesheet" href="/css/menu.css">
 </head>
 
-<body id="home">
-    <br><br>
-    <hr>
-    <center>
-        <h1 id="menu">OUR MENU</h1>
-        <div>
-            <hr>
+<body>
+    <div id="menuDiv">
+        <div id="verticalNav">
+            <nav id="menuNav" class="navbar fixed-top navbar-expand-md">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link menu-link-first" href="/menu?section=All">All</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/menu?section=Appetizers">Appetizers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/menu?section=Main Course">Main Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/menu?section=Breads">Breads</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/menu?section=Rice">Rice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="/menu?section=Accompaniments">Accompaniments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link-last" href="/menu?section=Desserts">Desserts</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </center>
-
-    <table>
-        <tr>
-            <td><img src="https://i.ibb.co/9g9yg5G/chad-montano-l-P5-MCM6n-Z5-A-unsplash.jpg" height="310"
-                    width="320" /></td>
-            <td></td>
-            <td>
-                <h2>FOOD</h2>
-                <h5> <em>Entrees, mains, and handhelds</em></h5>
-                <table border="1px" width="900">
-                    <tr>
-                        <th>ITEM</th>
-                        <th>DESCRIPTION</th>
-                        <th>PRICE</th>
-                    </tr>
-                    {{#each foodItems}}
-                    <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.description}}</td>
-                        <td>{{this.price}}</td>
-                    </tr>
-                    {{/each}}
-                </table>
-            </td>
-        </tr>
-    </table>
-    <br><br>
-    <table>
-        <tr>
-            <td>
-                <h2 align="right">DESERTS</h2>
-                <h5 align="right"><em>Deserts and sweets</em></h5>
-                <table border="1px" width="900">
-                    <tr>
-                        <th>ITEM</th>
-                        <th>DESCRIPTION</th>
-                        <th>PRICE</th>
-                    </tr>
-                    {{#each desertItems}}
-                    <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.description}}</td>
-                        <td>{{this.price}}</td>
-                    </tr>
-                    {{/each}}
-                </table>
-            </td>
-            <td></td>
-            <td><img src="https://i.ibb.co/rsxRJMX/oscar-nord-5-CPn8-NE2-Tc-unsplash.jpg" height="310" width="320" />
-            </td>
-        </tr>
-    </table>
-    <br><br>
-    <table>
-        <tr>
-            <td><img src="https://i.ibb.co/cNrYC6S/izabela-rutkowski-Nme6-Tb-Wu-Vp-A-unsplash.jpg" height="310"
-                    width="320" /></td>
-            <td></td>
-            <td>
-                <h2>DRINKS</h2>
-                <h5><em>Sprits, wine, and beer</em></h5>
-                <table border="1px" width="900">
-                    <tr>
-                        <th>ITEM</th>
-                        <th>DESCRIPTION</th>
-                        <th>PRICE</th>
-                    </tr>
-                    {{#each drinkItems}}
-                    <tr>
-                        <td>{{this.name}}</td>
-                        <td>{{this.description}}</td>
-                        <td>{{this.price}}</td>
-                    </tr>
-                    {{/each}}
-                </table>
-            </td>
-        </tr>
-    </table>
+        <div id="filters">
+            <input type="submit" class='btn cat-btn' id="all" name="vnvfilter" value="All">
+            <input type="submit" class='btn cat-btn' id="veg" name="vnvfilter" value="Veg">
+            <input type="submit" class='btn cat-btn' id="nonveg" name="vnvfilter" value="Non-Veg">
+        </div>
+        <div id="menu-content">
+            <div class="card-grid">
+                {{#each items}}
+                <div class="card">
+                    <img src="/images/{{this.name}}.jpg" class="card-img-top" alt="{{this.name}} image" width="120"
+                        height="220">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                        <div class="card-bottom">
+                            <p id="price" class="card-text">INR {{this.price}}</p>
+                            <div class="cart-controls">
+                                <div class="quantity">
+                                    <button class="minus">-</button>
+                                    <span class="count">0</span>
+                                    <button class="plus">+</button>
+                                </div>
+                                <button class="add-to-cart" data-item-id="{{this.id}}">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <div id="cart-preview">
+            <ul id="itemlist">
+                <li>Hi this is first item</li>
+            </ul>
+        </div>
+    </div>
 </body>
+<script src="/js/menu.js"></script>
 
 </html>
