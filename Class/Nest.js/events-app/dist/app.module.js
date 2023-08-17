@@ -10,14 +10,24 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const events_controller_1 = require("./events.controller");
+const config_1 = require("@nestjs/config");
+const typeorm_1 = require("@nestjs/typeorm");
+const app_dummy_1 = require("./app.dummy");
+const orm_config_1 = require("./config/orm.config");
+const orm_config_prod_1 = require("./config/orm.config.prod");
+const events_module_1 = require("./events/events.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        controllers: [app_controller_1.AppController, events_controller_1.EventsController],
-        providers: [app_service_1.AppService],
+        imports: [config_1.ConfigModule.forRoot({ isGlobal: true, load: [orm_config_1.default], expandVariables: true }),
+            typeorm_1.TypeOrmModule.forRootAsync({ useFactory: process.env.NODE_ENV !== 'production' ? orm_config_1.default : orm_config_prod_1.default }),
+            events_module_1.EventsModule],
+        controllers: [app_controller_1.AppController],
+        providers: [{ provide: app_service_1.AppService, useClass: app_service_1.AppService },
+            { provide: 'APP_NAME', useValue: 'Nest Events Backend!' },
+            { provide: 'MESSAGE', inject: [app_dummy_1.AppDummy], useFactory: (app) => `${app.dummy()} Factory!` },
+            app_dummy_1.AppDummy]
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
