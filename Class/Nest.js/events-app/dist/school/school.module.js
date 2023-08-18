@@ -6,18 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventsModule = void 0;
+exports.SchoolModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const events_controller_1 = require("./events.controller");
-const event_entity_1 = require("./event.entity");
-const attendee_entity_1 = require("./attendee.entity");
-let EventsModule = exports.EventsModule = class EventsModule {
+const subject_entity_1 = require("./subject.entity");
+const teacher_entity_1 = require("./teacher.entity");
+const training_controller_1 = require("./training.controller");
+let SchoolModule = exports.SchoolModule = class SchoolModule {
 };
-exports.EventsModule = EventsModule = __decorate([
+exports.SchoolModule = SchoolModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([event_entity_1.Event, attendee_entity_1.Attendee])],
-        controllers: [events_controller_1.EventsController]
+        imports: [typeorm_1.TypeOrmModule.forFeature([subject_entity_1.Subject, teacher_entity_1.Teacher])],
+        controllers: [training_controller_1.TrainingController]
     })
-], EventsModule);
-//# sourceMappingURL=events.module.js.map
+], SchoolModule);
+//# sourceMappingURL=school.module.js.map

@@ -9,36 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Event = void 0;
+exports.Subject = void 0;
 const typeorm_1 = require("typeorm");
-const attendee_entity_1 = require("./attendee.entity");
-let Event = exports.Event = class Event {
+const teacher_entity_1 = require("./teacher.entity");
+let Subject = exports.Subject = class Subject {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Event.prototype, "id", void 0);
+], Subject.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Event.prototype, "name", void 0);
+], Subject.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Event.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Date)
-], Event.prototype, "when", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Event.prototype, "address", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => attendee_entity_1.Attendee, (attendee) => attendee.event, { cascade: true }),
+    (0, typeorm_1.ManyToMany)(() => teacher_entity_1.Teacher, (teacher) => teacher.subjects, { cascade: true }),
+    (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
-], Event.prototype, "attendees", void 0);
-exports.Event = Event = __decorate([
+], Subject.prototype, "teachers", void 0);
+exports.Subject = Subject = __decorate([
     (0, typeorm_1.Entity)()
-], Event);
-//# sourceMappingURL=event.entity.js.map
+], Subject);
+//# sourceMappingURL=subject.entity.js.map

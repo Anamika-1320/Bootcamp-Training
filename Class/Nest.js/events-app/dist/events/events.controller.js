@@ -19,10 +19,12 @@ const create_event_dto_1 = require("./create-event.dto");
 const update_event_dto_1 = require("./update-event.dto");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
+const attendee_entity_1 = require("./attendee.entity");
 const event_entity_1 = require("./event.entity");
 let EventsController = exports.EventsController = EventsController_1 = class EventsController {
-    constructor(repository) {
+    constructor(repository, attendeeRepository) {
         this.repository = repository;
+        this.attendeeRepository = attendeeRepository;
         this.logger = new common_1.Logger(EventsController_1.name);
     }
     async findAll() {
@@ -39,6 +41,14 @@ let EventsController = exports.EventsController = EventsController_1 = class Eve
                 id: 'ASC'
             }
         });
+    }
+    async practice2() {
+        const event = await this.repository.findOne({ where: { id: (0, typeorm_1.Equal)(1) }, relations: ['attendees'] });
+        const attendee = new attendee_entity_1.Attendee();
+        attendee.name = 'Using Cascade';
+        event.attendees.push(attendee);
+        await this.repository.save(event);
+        return event;
     }
     async findOne(id) {
         const event = await this.repository.findOne({ where: { id: (0, typeorm_1.Equal)(id) } });
@@ -85,6 +95,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "practice", null);
 __decorate([
+    (0, common_1.Get)('/practice2'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], EventsController.prototype, "practice2", null);
+__decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -117,6 +133,8 @@ __decorate([
 exports.EventsController = EventsController = EventsController_1 = __decorate([
     (0, common_1.Controller)('/events'),
     __param(0, (0, typeorm_2.InjectRepository)(event_entity_1.Event)),
-    __metadata("design:paramtypes", [typeorm_1.Repository])
+    __param(1, (0, typeorm_2.InjectRepository)(attendee_entity_1.Attendee)),
+    __metadata("design:paramtypes", [typeorm_1.Repository,
+        typeorm_1.Repository])
 ], EventsController);
 //# sourceMappingURL=events.controller.js.map

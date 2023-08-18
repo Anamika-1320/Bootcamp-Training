@@ -16,13 +16,15 @@ const app_dummy_1 = require("./app.dummy");
 const orm_config_1 = require("./config/orm.config");
 const orm_config_prod_1 = require("./config/orm.config.prod");
 const events_module_1 = require("./events/events.module");
+const school_module_1 = require("./school/school.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule.forRoot({ isGlobal: true, load: [orm_config_1.default], expandVariables: true }),
             typeorm_1.TypeOrmModule.forRootAsync({ useFactory: process.env.NODE_ENV !== 'production' ? orm_config_1.default : orm_config_prod_1.default }),
-            events_module_1.EventsModule],
+            events_module_1.EventsModule,
+            school_module_1.SchoolModule],
         controllers: [app_controller_1.AppController],
         providers: [{ provide: app_service_1.AppService, useClass: app_service_1.AppService },
             { provide: 'APP_NAME', useValue: 'Nest Events Backend!' },
