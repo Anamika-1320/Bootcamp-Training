@@ -15,22 +15,27 @@ var EventsController_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventsController = void 0;
 const common_1 = require("@nestjs/common");
-const create_event_dto_1 = require("./create-event.dto");
-const update_event_dto_1 = require("./update-event.dto");
+const create_event_dto_1 = require("./input/create-event.dto");
+const update_event_dto_1 = require("./input/update-event.dto");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
 const attendee_entity_1 = require("./attendee.entity");
 const event_entity_1 = require("./event.entity");
+const events_service_1 = require("./events.service");
+const list_events_1 = require("./input/list.events");
 let EventsController = exports.EventsController = EventsController_1 = class EventsController {
-    constructor(repository, attendeeRepository) {
+    constructor(repository, attendeeRepository, eventsService) {
         this.repository = repository;
         this.attendeeRepository = attendeeRepository;
+        this.eventsService = eventsService;
         this.logger = new common_1.Logger(EventsController_1.name);
     }
-    async findAll() {
-        this.logger.log(`Hit the findAll route`);
-        const events = await this.repository.find();
-        this.logger.debug(`Found ${events.length} events`);
+    async findAll(filter) {
+        const events = await this.eventsService.getEventsWithAttendeeCountFilteredPaginated(filter, {
+            total: true,
+            currentPage: filter.page,
+            limit: 3
+        });
         return events;
     }
     async practice() {
@@ -51,7 +56,7 @@ let EventsController = exports.EventsController = EventsController_1 = class Eve
         return event;
     }
     async findOne(id) {
-        const event = await this.repository.findOne({ where: { id: (0, typeorm_1.Equal)(id) } });
+        const event = await this.eventsService.getEvent(id);
         if (!event) {
             throw new common_1.NotFoundException();
         }
@@ -84,8 +89,10 @@ let EventsController = exports.EventsController = EventsController_1 = class Eve
 };
 __decorate([
     (0, common_1.Get)(),
+    (0, common_1.UsePipes)(new common_1.ValidationPipe({ transform: true })),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [list_events_1.ListEvents]),
     __metadata("design:returntype", Promise)
 ], EventsController.prototype, "findAll", null);
 __decorate([
@@ -135,6 +142,7 @@ exports.EventsController = EventsController = EventsController_1 = __decorate([
     __param(0, (0, typeorm_2.InjectRepository)(event_entity_1.Event)),
     __param(1, (0, typeorm_2.InjectRepository)(attendee_entity_1.Attendee)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
-        typeorm_1.Repository])
+        typeorm_1.Repository,
+        events_service_1.EventsService])
 ], EventsController);
 //# sourceMappingURL=events.controller.js.map

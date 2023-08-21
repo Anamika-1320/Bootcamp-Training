@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, HttpCode, Logger, NotFoundException, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
-import { CreateEventDto } from './create-event.dto';
-import { UpdateEventDto } from './update-event.dto';
+import { Body, Controller, Delete, Get, HttpCode, Logger, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateEventDto } from './input/create-event.dto';
+import { UpdateEventDto } from './input/update-event.dto';
 import { Equal, MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Attendee } from 'src/events/attendee.entity';
 import { Event } from 'src/events/event.entity';
+import { EventsService } from './events.service';
+import { ListEvents } from './input/list.events';
 
 @Controller('/events')
 export class EventsController {
@@ -15,14 +17,19 @@ export class EventsController {
         private readonly repository: Repository<Event>,
 
         @InjectRepository(Attendee)
-        private readonly attendeeRepository: Repository<Attendee>
+        private readonly attendeeRepository: Repository<Attendee>,
+
+        private readonly eventsService: EventsService
     ) { }
 
     @Get()
-    async findAll() {
-        this.logger.log(`Hit the findAll route`);
-        const events = await this.repository.find();
-        this.logger.debug(`Found ${events.length} events`);
+    @UsePipes(new ValidationPipe({ transform: true }))
+    async findAll(@Query() filter: ListEvents) {
+        const events = await this.eventsService.getEventsWithAttendeeCountFilteredPaginated(filter, {
+            total: true,
+            currentPage: filter.page,
+            limit: 3
+        });
         return events;
     }
 
@@ -61,7 +68,7 @@ export class EventsController {
 
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
-        const event = await this.repository.findOne({ where: { id: Equal(id) } });
+        const event = await this.eventsService.getEvent(id);
         if (!event) {
             throw new NotFoundException();
         }

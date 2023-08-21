@@ -6,4 +6,8 @@ export declare class Event {
     when: Date;
     address: string;
     attendees: Attendee[];
+    attendeeCount?: Number;
+    attendeeAccepted?: Number;
+    attendeeMaybe?: Number;
+    attendeeRejected?: Number;
 }

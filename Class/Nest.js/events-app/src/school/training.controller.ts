@@ -1,6 +1,6 @@
 import { Controller, Post } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { Subject } from './subject.entity';
 import { Teacher } from './teacher.entity';
 
@@ -50,19 +50,14 @@ export class TrainingController {
 
   @Post('/remove')
   public async removingRelation() {
-    // const subject = await this.subjectRepository.findOne(
-    //   1,
-    //   { relations: ['teachers'] }
-    // );
+    const subject = await this.subjectRepository.findOne({ where: { id: Equal(1) }, relations: ['teachers'] });
 
-    // subject.teachers = subject.teachers.filter(
-    //   teacher => teacher.id !== 2
-    // );
+    subject.teachers = subject.teachers.filter(teacher => teacher.id !== 2);
 
-    // await this.subjectRepository.save(subject);
-    await this.subjectRepository.createQueryBuilder('s')
-      .update()
-      .set({ name: "Confidential" })
-      .execute();
+    await this.subjectRepository.save(subject);
+    // await this.subjectRepository.createQueryBuilder('s')
+    //   .update()
+    //   .set({ name: "Confidential" })
+    //   .execute();
   }
 }

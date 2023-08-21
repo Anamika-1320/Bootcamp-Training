@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { Pool } = require('pg');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -7,30 +8,56 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-let todos = [];
-let nextId = 1;
-
-app.get('/todos', (req, res) => {
-    res.json(todos);
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'todo-list',
+    password: 'root',
+    port: 5432,
 });
 
-app.post('/todos', (req, res) => {
-    const newTodo = { id: nextId++, text: req.body.text };
-    todos.push(newTodo);
-    res.json(newTodo);
+app.get('/todos', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM todos');
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
-app.put('/todos/:id', (req, res) => {
+app.post('/todos', async (req, res) => {
+    const text = req.body.text;
+    try {
+        const { rows } = await pool.query('INSERT INTO todos(text) VALUES($1) RETURNING *', [text]);
+        res.json(rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.put('/todos/:id', async (req, res) => {
     const todoId = parseInt(req.params.id);
-    const updatedTodo = req.body;
-    todos = todos.map((todo) => (todo.id === todoId ? { ...todo, ...updatedTodo } : todo));
-    res.json(updatedTodo);
+    const updatedText = req.body.text;
+    try {
+        const { rows } = await pool.query('UPDATE todos SET text = $1 WHERE id = $2 RETURNING *', [updatedText, todoId]);
+        res.json(rows[0]);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
-app.delete('/todos/:id', (req, res) => {
+app.delete('/todos/:id', async (req, res) => {
     const todoId = parseInt(req.params.id);
-    todos = todos.filter((todo) => todo.id !== todoId);
-    res.json({ message: 'Todo deleted successfully' });
+    try {
+        await pool.query('DELETE FROM todos WHERE id = $1', [todoId]);
+        res.json({ message: 'Todo deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.listen(PORT, () => {

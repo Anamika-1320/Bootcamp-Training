@@ -34,10 +34,9 @@ let TrainingController = exports.TrainingController = class TrainingController {
         await this.subjectRepository.save(subject);
     }
     async removingRelation() {
-        await this.subjectRepository.createQueryBuilder('s')
-            .update()
-            .set({ name: "Confidential" })
-            .execute();
+        const subject = await this.subjectRepository.findOne({ where: { id: (0, typeorm_2.Equal)(1) }, relations: ['teachers'] });
+        subject.teachers = subject.teachers.filter(teacher => teacher.id !== 2);
+        await this.subjectRepository.save(subject);
     }
 };
 __decorate([

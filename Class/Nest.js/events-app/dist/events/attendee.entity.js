@@ -9,9 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Attendee = void 0;
+exports.Attendee = exports.AttendeeAnswerEnum = void 0;
 const typeorm_1 = require("typeorm");
 const event_entity_1 = require("./event.entity");
+var AttendeeAnswerEnum;
+(function (AttendeeAnswerEnum) {
+    AttendeeAnswerEnum[AttendeeAnswerEnum["Accepted"] = 1] = "Accepted";
+    AttendeeAnswerEnum[AttendeeAnswerEnum["Maybe"] = 2] = "Maybe";
+    AttendeeAnswerEnum[AttendeeAnswerEnum["Rejected"] = 3] = "Rejected";
+})(AttendeeAnswerEnum || (exports.AttendeeAnswerEnum = AttendeeAnswerEnum = {}));
 let Attendee = exports.Attendee = class Attendee {
 };
 __decorate([
@@ -27,6 +33,13 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", event_entity_1.Event)
 ], Attendee.prototype, "event", void 0);
+__decorate([
+    (0, typeorm_1.Column)('enum', {
+        enum: AttendeeAnswerEnum,
+        default: AttendeeAnswerEnum.Accepted
+    }),
+    __metadata("design:type", Number)
+], Attendee.prototype, "answer", void 0);
 exports.Attendee = Attendee = __decorate([
     (0, typeorm_1.Entity)()
 ], Attendee);
