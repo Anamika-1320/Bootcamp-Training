@@ -80,11 +80,10 @@ let EventsController = exports.EventsController = EventsController_1 = class Eve
         });
     }
     async remove(id) {
-        const event = await this.repository.findOne({ where: { id: (0, typeorm_1.Equal)(id) } });
-        if (!event) {
+        const result = await this.eventsService.deleteEvent(id);
+        if (result?.affected !== 1) {
             throw new common_1.NotFoundException();
         }
-        await this.repository.remove(event);
     }
 };
 __decorate([

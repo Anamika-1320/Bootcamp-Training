@@ -5,6 +5,8 @@ const event_entity_1 = require("../events/event.entity");
 const attendee_entity_1 = require("../events/attendee.entity");
 const subject_entity_1 = require("../school/subject.entity");
 const teacher_entity_1 = require("../school/teacher.entity");
+const user_entity_1 = require("../auth/user.entity");
+const profile_entity_1 = require("../auth/profile.entity");
 exports.default = (0, config_1.registerAs)('orm.config', () => ({
     type: 'postgres',
     host: process.env.DB_HOST,
@@ -12,7 +14,7 @@ exports.default = (0, config_1.registerAs)('orm.config', () => ({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [event_entity_1.Event, attendee_entity_1.Attendee, subject_entity_1.Subject, teacher_entity_1.Teacher],
+    entities: [event_entity_1.Event, attendee_entity_1.Attendee, subject_entity_1.Subject, teacher_entity_1.Teacher, user_entity_1.User, profile_entity_1.Profile],
     synchronize: true,
 }));
 //# sourceMappingURL=orm.config.js.map

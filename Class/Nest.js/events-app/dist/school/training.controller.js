@@ -24,19 +24,20 @@ let TrainingController = exports.TrainingController = class TrainingController {
         this.teacherRepository = teacherRepository;
     }
     async savingRelation() {
-        const subject = new subject_entity_1.Subject();
-        subject.name = 'Math';
-        const teacher1 = new teacher_entity_1.Teacher();
-        teacher1.name = 'John Doe';
-        const teacher2 = new teacher_entity_1.Teacher();
-        teacher2.name = 'Harry Doe';
-        subject.teachers = [teacher1, teacher2];
-        await this.subjectRepository.save(subject);
+        const subject = await this.subjectRepository.findOne({ where: { id: 2 } });
+        const teacher1 = await this.teacherRepository.findOne({ where: { id: 3 } });
+        const teacher2 = await this.teacherRepository.findOne({ where: { id: 4 } });
+        return await this.subjectRepository
+            .createQueryBuilder()
+            .relation(subject_entity_1.Subject, 'teachers')
+            .of(subject)
+            .add([teacher1, teacher2]);
     }
     async removingRelation() {
-        const subject = await this.subjectRepository.findOne({ where: { id: (0, typeorm_2.Equal)(1) }, relations: ['teachers'] });
-        subject.teachers = subject.teachers.filter(teacher => teacher.id !== 2);
-        await this.subjectRepository.save(subject);
+        await this.subjectRepository.createQueryBuilder('s')
+            .update()
+            .set({ name: "Confidential" })
+            .execute();
     }
 };
 __decorate([

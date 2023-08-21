@@ -66,6 +66,10 @@ let EventsService = exports.EventsService = EventsService_1 = class EventsServic
         this.logger.debug(query.getSql());
         return await query.getOne();
     }
+    async deleteEvent(id) {
+        return await this.eventsRepository.createQueryBuilder('e')
+            .delete().where('id = :id', { id }).execute();
+    }
 };
 exports.EventsService = EventsService = EventsService_1 = __decorate([
     (0, common_1.Injectable)(),

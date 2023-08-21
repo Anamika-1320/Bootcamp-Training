@@ -100,10 +100,10 @@ export class EventsController {
     @HttpCode(204)
     async remove(@Param('id') id) {
         // this.events = this.events.filter(event => event.id !== parseInt(id));
-        const event = await this.repository.findOne({ where: { id: Equal(id) } });
-        if (!event) {
+        // const event = await this.repository.findOne({ where: { id: Equal(id) } });
+        const result = await this.eventsService.deleteEvent(id);
+        if (result?.affected !== 1) {
             throw new NotFoundException();
         }
-        await this.repository.remove(event);
     }
 }
