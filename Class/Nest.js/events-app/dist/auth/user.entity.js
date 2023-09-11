@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
+const event_entity_1 = require("../events/event.entity");
 let User = exports.User = class User {
 };
 __decorate([
@@ -43,6 +44,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", profile_entity_1.Profile)
 ], User.prototype, "profile", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => event_entity_1.Event, (event) => event.organizer),
+    __metadata("design:type", Array)
+], User.prototype, "organized", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

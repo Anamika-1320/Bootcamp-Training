@@ -5,6 +5,9 @@ import { DeleteResult, Repository } from "typeorm";
 import { Injectable, Logger } from "@nestjs/common";
 import { ListEvents, WhenEventFilter } from './input/list.events';
 import { PaginateOptions, paginate } from '../pagination/paginator';
+import { CreateEventDto } from "./input/create-event.dto";
+import { User } from "src/auth/user.entity";
+import { UpdateEventDto } from "./input/update-event.dto";
 
 @Injectable()
 export class EventsService {
@@ -66,6 +69,22 @@ export class EventsService {
             .andWhere('e.id = :id', { id });
         this.logger.debug(query.getSql());
         return await query.getOne();
+    }
+
+    public async createEvent(input: CreateEventDto, user: User): Promise<Event> {
+        return await this.eventsRepository.save({
+            ...input,
+            organizer: user,
+            when: new Date(input.when),
+        });
+    }
+
+    public async updateEvent(input: UpdateEventDto, event: Event): Promise<Event> {
+        return await this.eventsRepository.save({
+            ...event,
+            ...input,
+            when: input.when ? new Date(input.when) : event.when
+        });
     }
 
     public async deleteEvent(id: number): Promise<DeleteResult> {

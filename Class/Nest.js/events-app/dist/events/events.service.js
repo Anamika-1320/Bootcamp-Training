@@ -66,6 +66,20 @@ let EventsService = exports.EventsService = EventsService_1 = class EventsServic
         this.logger.debug(query.getSql());
         return await query.getOne();
     }
+    async createEvent(input, user) {
+        return await this.eventsRepository.save({
+            ...input,
+            organizer: user,
+            when: new Date(input.when),
+        });
+    }
+    async updateEvent(input, event) {
+        return await this.eventsRepository.save({
+            ...event,
+            ...input,
+            when: input.when ? new Date(input.when) : event.when
+        });
+    }
     async deleteEvent(id) {
         return await this.eventsRepository.createQueryBuilder('e')
             .delete().where('id = :id', { id }).execute();

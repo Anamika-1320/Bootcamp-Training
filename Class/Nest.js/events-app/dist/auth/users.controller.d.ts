@@ -15,5 +15,6 @@ export declare class UsersController {
         firstName: string;
         lastName: string;
         profile: import("./profile.entity").Profile;
+        organized: import("../events/event.entity").Event[];
     }>;
 }
