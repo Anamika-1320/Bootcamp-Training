@@ -41,7 +41,7 @@ export class EventsService {
     private async getEventsWithAttendeeCountFiltered(filter?: ListEvents) {
         let query = this.getEventsWithAttendeeCountQuery();
         if (!filter) {
-            return await query;
+            return query;
         }
         if (filter.when == WhenEventFilter.Today) {
             query = query.andWhere(`e.when >= current_date and e.when <= current_date + 1`)
@@ -56,7 +56,7 @@ export class EventsService {
             query = query.andWhere(`extract('week' from e.when) = extract('week' from current_date) + 1`)
         }
 
-        return await query;
+        return query;
     }
 
     public async getEventsWithAttendeeCountFilteredPaginated(filter: ListEvents, paginateOptions: PaginateOptions) {
@@ -64,7 +64,6 @@ export class EventsService {
     }
 
     public async getEvent(id: number): Promise<Event> | undefined {
-        // const query = this.getEventsBaseQuery()
         const query = this.getEventsWithAttendeeCountQuery()
             .andWhere('e.id = :id', { id });
         this.logger.debug(query.getSql());

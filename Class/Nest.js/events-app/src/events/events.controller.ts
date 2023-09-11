@@ -1,10 +1,6 @@
 import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, Logger, NotFoundException, Param, ParseIntPipe, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateEventDto } from './input/create-event.dto';
 import { UpdateEventDto } from './input/update-event.dto';
-import { Equal, MoreThan, Repository } from 'typeorm';
-import { InjectRepository } from "@nestjs/typeorm";
-import { Attendee } from 'src/events/attendee.entity';
-import { Event } from 'src/events/event.entity';
 import { EventsService } from './events.service';
 import { ListEvents } from './input/list.events';
 import { CurrentUser } from 'src/auth/current-user.decorator';
@@ -96,7 +92,6 @@ export class EventsController {
     @UseGuards(AuthGuardJwt)
     @HttpCode(204)
     async remove(@Param('id') id, @CurrentUser() user: User) {
-        // this.events = this.events.filter(event => event.id !== parseInt(id));
         const event = await this.eventsService.getEvent(id);
         if (!event) {
             throw new NotFoundException();
